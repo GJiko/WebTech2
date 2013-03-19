@@ -10,18 +10,29 @@
 <?php 
 	$file = 'http://www.jobs.ge/rss/jobs/';
 	$feed = simplexml_load_file($file);
+	//printf('<pre>%s</pre>', print_r($feed, TRUE));
 ?>
 <header>
     <h1> <?php  echo $feed->channel->title; ?> </h1>
 </header>
-<section>
-	<ol>
-    	<?php
-				foreach($feed->channel->item as $item){
-					echo "<li>$item->description;</li>";
-					}
-		?>
-    </ol>
+	 <?php
+		foreach($feed->channel->item as $item):
+		$data = strtotime($item->pubDate);
+		$time = date('D, j M  g:i A', $data);
+	?>
+ <section id="feeds">
+	<ul id="feed_list">
+    	<li id="feed_title">
+				<b><?php echo $item->title;?></b>
+				<time id="time"><?php echo $time ?></time>				
+        </li>
+        <li id="description">
+        		<?php echo $item->description; ?>
+                <a href="<?php echo $item->link; ?>" id="link">Read more</a>
+        </li>
+     </ul>
 </section>
+       <?php endforeach; ?>    
+	
 </body>
 </html>
